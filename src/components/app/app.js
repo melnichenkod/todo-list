@@ -22,7 +22,10 @@ const App = () => {
           <SearchPanel />
           <ItemFilter />
         </div>
-        <TodoList todos={todoData}/>
+        <TodoList 
+          todos={todoData}
+          onDeleted={(id) => console.log('deleted', id)}
+        />
         <ItemAddForm />
       </div>
     )
