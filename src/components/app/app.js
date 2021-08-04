@@ -8,6 +8,7 @@ import  './app.css'
 
 
 export default class App extends Component {
+  idNumber = 10
   state = {
     todoData: [
       { label: 'Create React App', important: false, id: 1 },
@@ -30,6 +31,20 @@ export default class App extends Component {
       }
     })
   }
+
+  addItem = (label) => {
+    const newItem = {
+      label,
+      important: false,
+      id: this.idNumber++
+    };
+    //add new item in array, change state
+    this.setState(({todoData})=> {
+      const newTodoData = [...todoData, newItem]
+      return {todoData: newTodoData}
+    })
+    
+  }
   
   render(){
     return(
@@ -45,7 +60,8 @@ export default class App extends Component {
             this.deleteItem
           } 
         />
-        <ItemAddForm />
+        <ItemAddForm
+          onItemAdded={this.addItem} />
       </div>
     )
   }
