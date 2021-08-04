@@ -7,14 +7,31 @@ import ItemAddForm from '../item-add-form/item-add-form'
 import  './app.css'
 
 
-const App = () => {
-  const todoData = [
-    { label: 'Create React App', important: false, id: 1 },
+export default class App extends Component {
+  state = {
+    todoData: [
+      { label: 'Create React App', important: false, id: 1 },
     { label: 'Make Awesome App', important: true, id: 2 },
     { label: 'Have a lunch', important: false, id: 3 }
-  ]
+    ]
+  };
   
+
+  deleteItem = (id)=> {
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex((item) =>{
+        return item.id === id
+      })
+      // const before = todoData.slice(0, idx);
+      // const after = todoData.slice(idx + 1);
+      const newTodoData = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)]
+      return {
+        todoData: newTodoData
+      }
+    })
+  }
   
+  render(){
     return(
       <div className='todo-app'>
         <AppHeader toDo={3} done={0}></AppHeader>
@@ -23,11 +40,14 @@ const App = () => {
           <ItemFilter />
         </div>
         <TodoList 
-          todos={todoData}
-          onDeleted={(id) => console.log('deleted', id)}
+          todos={this.state.todoData}
+          onDeleted ={
+            this.deleteItem
+          } 
         />
         <ItemAddForm />
       </div>
     )
+  }
+    
 }
-export default App;
