@@ -11,18 +11,48 @@ export default class App extends Component {
   idNumber = 10
   state = {
     todoData: [
-      { label: 'Create React App', important: false, id: 1 },
-    { label: 'Make Awesome App', important: true, id: 2 },
-    { label: 'Have a lunch', important: false, id: 3 }
+    { label: 'Create React App', important: false, done: false, id: 1 },
+    { label: 'Make Awesome App', important: true, done: false, id: 2 },
+    { label: 'Have a lunch', important: false, done: false, id: 3 }
     ]
   };
   
   onToggleDone = (id) => {
-    console.log('Toggle Done', id);
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex(item => item.id === id);
+
+      //update object
+      const oldItem = todoData[idx];
+      const newItem = {...oldItem, done: !oldItem.done}
+      //construct newArray
+      const newData = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1)
+      ];
+      return {
+        todoData: newData
+      }
+    })
   }
 
   onToggleImportant = (id) => {
-    console.log('Toggle Important', id);
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex(item => item.id === id);
+
+      //update object
+      const oldItem = todoData[idx];
+      const newItem = {...oldItem, important: !oldItem.important}
+      //construct newArray
+      const newData = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1)
+      ];
+      return {
+        todoData: newData
+      }
+    })
   }
 
   deleteItem = (id)=> {
@@ -43,6 +73,7 @@ export default class App extends Component {
     const newItem = {
       label,
       important: false,
+      done: false,
       id: this.idNumber++
     };
     //add new item in array, change state
