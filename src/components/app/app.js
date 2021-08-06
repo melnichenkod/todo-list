@@ -14,7 +14,8 @@ export default class App extends Component {
     { label: 'Create React App', important: false, done: false, id: 1 },
     { label: 'Make Awesome App', important: true, done: false, id: 2 },
     { label: 'Have a lunch', important: false, done: false, id: 3 }
-    ]
+    ],
+    searchData: 'App'
   };
   
   onToggleDone = (id) => {
@@ -81,11 +82,18 @@ export default class App extends Component {
       const newTodoData = [...todoData, newItem]
       return {todoData: newTodoData}
     })
-    
+  }
+
+  searchData = (items, searchText) => {
+    if (searchText.length === 0) {
+      return items
+    }
+    return items.filter(item => item.label.indexOf(searchText) > -1)
   }
   
   render(){
-    const {todoData} = this.state;
+    const {todoData, searchData} = this.state;
+    const visibleItems = this.searchData(todoData, searchData)
     const doneCount = todoData.filter((item)=> item.done).length;
     const todoCount = todoData.length - doneCount;
     return(
@@ -96,7 +104,7 @@ export default class App extends Component {
           <ItemFilter />
         </div>
         <TodoList 
-          todos={todoData}
+          todos={visibleItems}
           onDeleted ={
             this.deleteItem
           }
